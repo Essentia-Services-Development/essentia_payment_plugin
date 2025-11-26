@@ -1,7 +1,9 @@
 //! Payment routing.
 
-use crate::errors::{PaymentError, PaymentResult};
-use crate::types::{PaymentRoute, RouteHop};
+use crate::{
+    errors::{PaymentError, PaymentResult},
+    types::PaymentRoute,
+};
 
 /// Payment router for finding routes through the Lightning Network.
 pub struct PaymentRouter {
@@ -17,20 +19,14 @@ impl PaymentRouter {
 
     /// Find a route to the destination.
     pub fn find_route(
-        &self,
-        _destination: &[u8; 33],
-        _amount_msat: u64,
+        &self, _destination: &[u8; 33], _amount_msat: u64,
     ) -> PaymentResult<PaymentRoute> {
         if self.node_count == 0 {
             return Err(PaymentError::Routing("No nodes in graph".into()));
         }
 
         // Placeholder - would implement pathfinding
-        Ok(PaymentRoute {
-            hops: Vec::new(),
-            total_fees_msat: 0,
-            total_cltv_delta: 0,
-        })
+        Ok(PaymentRoute { hops: Vec::new(), total_fees_msat: 0, total_cltv_delta: 0 })
     }
 
     /// Add a node to the routing graph.
@@ -39,12 +35,7 @@ impl PaymentRouter {
     }
 
     /// Add a channel to the routing graph.
-    pub fn add_channel(
-        &mut self,
-        _node_a: [u8; 33],
-        _node_b: [u8; 33],
-        _short_channel_id: u64,
-    ) {
+    pub fn add_channel(&mut self, _node_a: [u8; 33], _node_b: [u8; 33], _short_channel_id: u64) {
         // Placeholder - would add to graph
     }
 }

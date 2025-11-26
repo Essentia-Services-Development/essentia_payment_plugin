@@ -1,8 +1,10 @@
 //! Invoice generation and management.
 
-use crate::config::PaymentConfig;
-use crate::errors::{PaymentError, PaymentResult};
-use crate::types::PaymentInvoice;
+use crate::{
+    config::PaymentConfig,
+    errors::{PaymentError, PaymentResult},
+    types::PaymentInvoice,
+};
 
 /// Invoice generator for creating payment invoices.
 pub struct InvoiceGenerator {
@@ -17,9 +19,7 @@ impl InvoiceGenerator {
 
     /// Generate a new invoice.
     pub fn generate(
-        &self,
-        amount: Option<u64>,
-        description: impl Into<String>,
+        &self, amount: Option<u64>, description: impl Into<String>,
     ) -> PaymentResult<PaymentInvoice> {
         let description = description.into();
 
@@ -40,13 +40,7 @@ impl InvoiceGenerator {
         // In production, this would generate a proper BOLT11 invoice
         let encoded = format!("lnbc{}...placeholder", amount.unwrap_or(0));
 
-        Ok(PaymentInvoice {
-            payment_hash,
-            amount,
-            description,
-            expiry,
-            encoded,
-        })
+        Ok(PaymentInvoice { payment_hash, amount, description, expiry, encoded })
     }
 
     /// Verify an invoice.

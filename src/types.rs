@@ -4,17 +4,17 @@
 #[derive(Debug, Clone)]
 pub struct PaymentChannel {
     /// Channel identifier.
-    pub channel_id: [u8; 32],
+    pub channel_id:     [u8; 32],
     /// Remote peer public key.
-    pub peer_pubkey: [u8; 33],
+    pub peer_pubkey:    [u8; 33],
     /// Channel capacity in satoshis.
-    pub capacity: u64,
+    pub capacity:       u64,
     /// Local balance in satoshis.
-    pub local_balance: u64,
+    pub local_balance:  u64,
     /// Remote balance in satoshis.
     pub remote_balance: u64,
     /// Current channel state.
-    pub state: ChannelState,
+    pub state:          ChannelState,
 }
 
 /// Channel state.
@@ -38,22 +38,22 @@ pub struct PaymentInvoice {
     /// Invoice identifier (payment hash).
     pub payment_hash: [u8; 32],
     /// Amount in satoshis (None for any amount).
-    pub amount: Option<u64>,
+    pub amount:       Option<u64>,
     /// Invoice description.
-    pub description: String,
+    pub description:  String,
     /// Expiry timestamp.
-    pub expiry: u64,
+    pub expiry:       u64,
     /// Encoded invoice string (BOLT11).
-    pub encoded: String,
+    pub encoded:      String,
 }
 
 /// Payment route.
 #[derive(Debug, Clone)]
 pub struct PaymentRoute {
     /// Route hops.
-    pub hops: Vec<RouteHop>,
+    pub hops:             Vec<RouteHop>,
     /// Total fees in millisatoshis.
-    pub total_fees_msat: u64,
+    pub total_fees_msat:  u64,
     /// Total time lock delta.
     pub total_cltv_delta: u32,
 }
@@ -62,11 +62,11 @@ pub struct PaymentRoute {
 #[derive(Debug, Clone)]
 pub struct RouteHop {
     /// Node public key.
-    pub pubkey: [u8; 33],
+    pub pubkey:            [u8; 33],
     /// Short channel ID.
-    pub short_channel_id: u64,
+    pub short_channel_id:  u64,
     /// Fee in millisatoshis.
-    pub fee_msat: u64,
+    pub fee_msat:          u64,
     /// CLTV expiry delta.
     pub cltv_expiry_delta: u16,
 }

@@ -1,18 +1,20 @@
 //! Payment plugin implementation.
 
-use crate::channels::ChannelManager;
-use crate::config::PaymentConfig;
-use crate::errors::{PaymentError, PaymentResult};
-use crate::invoices::InvoiceGenerator;
-use crate::router::PaymentRouter;
-use crate::types::{PaymentAmount, PaymentInvoice, PaymentStatus};
+use crate::{
+    channels::ChannelManager,
+    config::PaymentConfig,
+    errors::{PaymentError, PaymentResult},
+    invoices::InvoiceGenerator,
+    router::PaymentRouter,
+    types::{PaymentAmount, PaymentInvoice, PaymentStatus},
+};
 
 /// Main payment plugin interface.
 pub struct PaymentPlugin {
-    config: PaymentConfig,
-    channel_manager: ChannelManager,
+    config:            PaymentConfig,
+    channel_manager:   ChannelManager,
     invoice_generator: InvoiceGenerator,
-    router: PaymentRouter,
+    router:            PaymentRouter,
 }
 
 impl PaymentPlugin {
@@ -43,20 +45,20 @@ impl PaymentPlugin {
         &mut self.channel_manager
     }
 
+    /// Get the payment router.
+    pub fn router(&self) -> &PaymentRouter {
+        &self.router
+    }
+
     /// Create an invoice.
     pub fn create_invoice(
-        &self,
-        amount: Option<u64>,
-        description: impl Into<String>,
+        &self, amount: Option<u64>, description: impl Into<String>,
     ) -> PaymentResult<PaymentInvoice> {
         self.invoice_generator.generate(amount, description)
     }
 
     /// Send a payment.
-    pub fn send_payment(
-        &self,
-        invoice: &PaymentInvoice,
-    ) -> PaymentResult<PaymentStatus> {
+    pub fn send_payment(&self, invoice: &PaymentInvoice) -> PaymentResult<PaymentStatus> {
         // Verify invoice first
         self.invoice_generator.verify(invoice)?;
 
@@ -65,9 +67,10 @@ impl PaymentPlugin {
         let balance = self.channel_manager.total_local_balance();
 
         if amount > balance {
-            return Err(PaymentError::InsufficientFunds(
-                format!("Need {} sats, have {}", amount, balance)
-            ));
+            return Err(PaymentError::InsufficientFunds(format!(
+                "Need {} sats, have {}",
+                amount, balance
+            )));
         }
 
         // In production, would route and send payment

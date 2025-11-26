@@ -1,7 +1,9 @@
 //! Payment channel management.
 
-use crate::errors::PaymentResult;
-use crate::types::{ChannelState, PaymentChannel};
+use crate::{
+    errors::PaymentResult,
+    types::{ChannelState, PaymentChannel},
+};
 
 /// Channel manager for Lightning Network channels.
 pub struct ChannelManager {
@@ -21,25 +23,17 @@ impl ChannelManager {
 
     /// Get active channels.
     pub fn active_channels(&self) -> Vec<&PaymentChannel> {
-        self.channels
-            .iter()
-            .filter(|c| c.state == ChannelState::Active)
-            .collect()
+        self.channels.iter().filter(|c| c.state == ChannelState::Active).collect()
     }
 
     /// Get total local balance across all active channels.
     pub fn total_local_balance(&self) -> u64 {
-        self.active_channels()
-            .iter()
-            .map(|c| c.local_balance)
-            .sum()
+        self.active_channels().iter().map(|c| c.local_balance).sum()
     }
 
     /// Open a new channel.
     pub fn open_channel(
-        &mut self,
-        _peer_pubkey: [u8; 33],
-        _capacity: u64,
+        &mut self, _peer_pubkey: [u8; 33], _capacity: u64,
     ) -> PaymentResult<[u8; 32]> {
         // Placeholder - would initiate channel opening
         let channel_id = [0u8; 32];

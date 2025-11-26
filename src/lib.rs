@@ -1,6 +1,7 @@
 //! # Essentia Payment Plugin
 //!
-//! Lightning Network and micropayment system integration for the Essentia platform.
+//! Lightning Network and micropayment system integration for the Essentia
+//! platform.
 //!
 //! ## Features
 //!
@@ -28,24 +29,23 @@
 //! └─────────────────────────────────────────────────────────────┘
 //! ```
 
-mod types;
-mod errors;
-mod config;
 mod channels;
+mod config;
+mod errors;
 mod invoices;
-mod router;
 mod plugin;
+mod router;
+mod types;
 
-pub use types::{
-    PaymentChannel, PaymentInvoice, PaymentRoute, PaymentStatus,
-    ChannelState, PaymentAmount,
-};
-pub use errors::{PaymentError, PaymentResult};
-pub use config::PaymentConfig;
 pub use channels::ChannelManager;
+pub use config::PaymentConfig;
+pub use errors::{PaymentError, PaymentResult};
 pub use invoices::InvoiceGenerator;
-pub use router::PaymentRouter;
 pub use plugin::PaymentPlugin;
+pub use router::PaymentRouter;
+pub use types::{
+    ChannelState, PaymentAmount, PaymentChannel, PaymentInvoice, PaymentRoute, PaymentStatus,
+};
 
 #[cfg(test)]
 mod tests {
