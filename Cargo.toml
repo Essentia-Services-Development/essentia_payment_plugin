@@ -1,0 +1,25 @@
+[package]
+name = "essentia_payment_plugin"
+version = "0.1.0"
+edition = "2024"
+authors = ["Essentia Services Development <dev@essentia.services>"]
+description = "Lightning Network and micropayment system integration"
+license = "MIT"
+repository = "https://github.com/Essentia-Services-Development/essentia_payment_plugin"
+keywords = ["essentia", "payment", "lightning", "bitcoin", "micropayments"]
+categories = ["cryptography", "asynchronous"]
+
+[dependencies]
+essentia_core = { path = "../../core/essentia_core" }
+essentia_traits = { path = "../../core/essentia_traits" }
+essentia_plugin_system = { path = "../../core/essentia_plugin_system" }
+essentia_pqc = { path = "../../services/essentia_pqc" }
+
+[dev-dependencies]
+
+[features]
+default = []
+
+[lib]
+name = "essentia_payment_plugin"
+path = "src/lib.rs"
