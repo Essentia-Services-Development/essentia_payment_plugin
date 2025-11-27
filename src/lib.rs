@@ -32,12 +32,14 @@
 mod channels;
 mod config;
 mod errors;
+mod flexforge;
 mod invoices;
 mod plugin;
 mod router;
 mod types;
 
 pub use channels::ChannelManager;
+pub use flexforge::PaymentFlexForgeIntegration;
 pub use config::PaymentConfig;
 pub use errors::{PaymentError, PaymentResult};
 pub use invoices::InvoiceGenerator;
