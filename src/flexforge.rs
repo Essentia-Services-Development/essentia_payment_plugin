@@ -2,8 +2,10 @@
 //!
 //! Provides payment and Lightning Network configuration panel within FlexForge.
 
-use std::fmt::Debug;
-use std::sync::{Arc, Mutex};
+use std::{
+    fmt::Debug,
+    sync::{Arc, Mutex},
+};
 
 use essentia_traits::plugin_contracts::flexforge_integration::{
     ConfigField, ConfigSchema, FlexForgeIntegration, FlexForgePanelCategory, UiConfigurable,
@@ -12,23 +14,23 @@ use essentia_traits::plugin_contracts::flexforge_integration::{
 /// Payment configuration for FlexForge panel
 #[derive(Debug, Clone)]
 pub struct PaymentConfig {
-    pub lightning_enabled: bool,
+    pub lightning_enabled:     bool,
     pub micropayments_enabled: bool,
-    pub default_network: String,
-    pub min_channel_capacity: u64,
-    pub auto_channel: bool,
-    pub pqc_channels: bool,
+    pub default_network:       String,
+    pub min_channel_capacity:  u64,
+    pub auto_channel:          bool,
+    pub pqc_channels:          bool,
 }
 
 impl Default for PaymentConfig {
     fn default() -> Self {
         Self {
-            lightning_enabled: true,
+            lightning_enabled:     true,
             micropayments_enabled: true,
-            default_network: "mainnet".to_string(),
-            min_channel_capacity: 100000,
-            auto_channel: false,
-            pqc_channels: true,
+            default_network:       "mainnet".to_string(),
+            min_channel_capacity:  100000,
+            auto_channel:          false,
+            pqc_channels:          true,
         }
     }
 }
@@ -42,9 +44,7 @@ pub struct PaymentFlexForgeIntegration {
 impl PaymentFlexForgeIntegration {
     /// Create a new FlexForge integration instance
     pub fn new() -> Self {
-        Self {
-            config: Arc::new(Mutex::new(PaymentConfig::default())),
-        }
+        Self { config: Arc::new(Mutex::new(PaymentConfig::default())) }
     }
 
     fn config(&self) -> PaymentConfig {
@@ -85,17 +85,21 @@ impl FlexForgeIntegration for PaymentFlexForgeIntegration {
 impl UiConfigurable for PaymentFlexForgeIntegration {
     fn config_schema(&self) -> ConfigSchema {
         ConfigSchema::new()
-            .with_field(ConfigField::toggle("lightning_enabled", "Lightning Network", true))
-            .with_field(ConfigField::toggle("micropayments_enabled", "Micropayments", true))
-            .with_field(ConfigField::select(
-                "default_network",
-                "Network",
-                vec![
-                    "mainnet".to_string(),
-                    "testnet".to_string(),
-                    "regtest".to_string(),
-                ],
+            .with_field(ConfigField::toggle(
+                "lightning_enabled",
+                "Lightning Network",
+                true,
             ))
+            .with_field(ConfigField::toggle(
+                "micropayments_enabled",
+                "Micropayments",
+                true,
+            ))
+            .with_field(ConfigField::select("default_network", "Network", vec![
+                "mainnet".to_string(),
+                "testnet".to_string(),
+                "regtest".to_string(),
+            ]))
             .with_field(ConfigField::number(
                 "min_channel_capacity",
                 "Min Channel (sats)",
@@ -115,7 +119,7 @@ impl UiConfigurable for PaymentFlexForgeIntegration {
             "default_network" => config.default_network = value.to_string(),
             "min_channel_capacity" => {
                 config.min_channel_capacity = value.parse().map_err(|_| "Invalid number")?;
-            }
+            },
             "auto_channel" => config.auto_channel = value == "true",
             "pqc_channels" => config.pqc_channels = value == "true",
             _ => return Err(format!("Unknown key: {}", key)),
@@ -134,10 +138,19 @@ impl UiConfigurable for PaymentFlexForgeIntegration {
     fn get_current_config(&self) -> Vec<(String, String)> {
         let config = self.config();
         vec![
-            ("lightning_enabled".to_string(), config.lightning_enabled.to_string()),
-            ("micropayments_enabled".to_string(), config.micropayments_enabled.to_string()),
+            (
+                "lightning_enabled".to_string(),
+                config.lightning_enabled.to_string(),
+            ),
+            (
+                "micropayments_enabled".to_string(),
+                config.micropayments_enabled.to_string(),
+            ),
             ("default_network".to_string(), config.default_network),
-            ("min_channel_capacity".to_string(), config.min_channel_capacity.to_string()),
+            (
+                "min_channel_capacity".to_string(),
+                config.min_channel_capacity.to_string(),
+            ),
             ("auto_channel".to_string(), config.auto_channel.to_string()),
             ("pqc_channels".to_string(), config.pqc_channels.to_string()),
         ]

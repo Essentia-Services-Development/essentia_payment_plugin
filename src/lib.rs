@@ -39,9 +39,9 @@ mod router;
 mod types;
 
 pub use channels::ChannelManager;
-pub use flexforge::PaymentFlexForgeIntegration;
 pub use config::PaymentConfig;
 pub use errors::{PaymentError, PaymentResult};
+pub use flexforge::PaymentFlexForgeIntegration;
 pub use invoices::InvoiceGenerator;
 pub use plugin::PaymentPlugin;
 pub use router::PaymentRouter;
