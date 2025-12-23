@@ -5,6 +5,7 @@ use crate::{
     errors::{PaymentError, PaymentResult},
     types::PaymentInvoice,
 };
+use essentia_error::time;
 
 /// Invoice generator for creating payment invoices.
 pub struct InvoiceGenerator {
@@ -21,20 +22,17 @@ impl InvoiceGenerator {
     pub fn generate(
         &self, amount: Option<u64>, description: impl Into<String>,
     ) -> PaymentResult<PaymentInvoice> {
-        let description = description.into();
+        let description = description;
 
         if description.is_empty() {
-            return Err(PaymentError::Invoice("Description cannot be empty".into()));
+            return Err(PaymentError::Invoice("Description cannot be empty";
         }
 
         // Generate random payment hash
         let payment_hash = generate_random_bytes();
 
         // Calculate expiry
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs())
-            .unwrap_or(0);
+        let now = time::unix_seconds();
         let expiry = now + self.config.default_invoice_expiry;
 
         // In production, this would generate a proper BOLT11 invoice
@@ -45,13 +43,10 @@ impl InvoiceGenerator {
 
     /// Verify an invoice.
     pub fn verify(&self, invoice: &PaymentInvoice) -> PaymentResult<bool> {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|d| d.as_secs())
-            .unwrap_or(0);
+        let now = time::unix_seconds();
 
         if invoice.expiry < now {
-            return Err(PaymentError::Invoice("Invoice has expired".into()));
+            return Err(PaymentError::Invoice("Invoice has expired";
         }
 
         Ok(true)
@@ -62,13 +57,12 @@ impl InvoiceGenerator {
 fn generate_random_bytes() -> [u8; 32] {
     // Simple PRNG for placeholder - use proper entropy in production
     let mut bytes = [0u8; 32];
-    let seed = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_nanos())
-        .unwrap_or(0);
+    let seed = time::unix_nanos();
 
     for (i, byte) in bytes.iter_mut().enumerate() {
         *byte = ((seed >> (i % 16)) & 0xFF) as u8;
     }
     bytes
 }
+
+
