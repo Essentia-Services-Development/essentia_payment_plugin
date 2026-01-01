@@ -22,7 +22,7 @@ impl PaymentRouter {
         &self, _destination: &[u8; 33], _amount_msat: u64,
     ) -> PaymentResult<PaymentRoute> {
         if self.node_count == 0 {
-            return Err(PaymentError::Routing("No nodes in graph";
+            return Err(PaymentError::Routing("No nodes in graph".into()));
         }
 
         // Placeholder - would implement pathfinding
@@ -45,4 +45,3 @@ impl Default for PaymentRouter {
         Self::new()
     }
 }
-
