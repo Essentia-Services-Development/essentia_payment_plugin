@@ -11,9 +11,9 @@ use essentia_traits::plugin_contracts::flexforge_integration::{
     ConfigField, ConfigSchema, FlexForgeIntegration, FlexForgePanelCategory, UiConfigurable,
 };
 
-/// Payment configuration for FlexForge panel
+/// FlexForge payment panel configuration
 #[derive(Debug, Clone)]
-pub struct PaymentConfig {
+pub struct FlexForgePaymentConfig {
     pub lightning_enabled:     bool,
     pub micropayments_enabled: bool,
     pub default_network:       String,
@@ -22,7 +22,7 @@ pub struct PaymentConfig {
     pub pqc_channels:          bool,
 }
 
-impl Default for PaymentConfig {
+impl Default for FlexForgePaymentConfig {
     fn default() -> Self {
         Self {
             lightning_enabled:     true,
@@ -38,20 +38,20 @@ impl Default for PaymentConfig {
 /// FlexForge integration for the Payment plugin
 #[derive(Debug)]
 pub struct PaymentFlexForgeIntegration {
-    config: Arc<Mutex<PaymentConfig>>,
+    config: Arc<Mutex<FlexForgePaymentConfig>>,
 }
 
 impl PaymentFlexForgeIntegration {
     /// Create a new FlexForge integration instance
     pub fn new() -> Self {
-        Self { config: Arc::new(Mutex::new(PaymentConfig::default())) }
+        Self { config: Arc::new(Mutex::new(FlexForgePaymentConfig::default())) }
     }
 
-    fn config(&self) -> PaymentConfig {
+    fn config(&self) -> FlexForgePaymentConfig {
         self.config.lock().map(|c| c.clone()).unwrap_or_default()
     }
 
-    fn set_config(&self, config: PaymentConfig) {
+    fn set_config(&self, config: FlexForgePaymentConfig) {
         if let Ok(mut guard) = self.config.lock() {
             *guard = config;
         }
@@ -157,7 +157,7 @@ impl UiConfigurable for PaymentFlexForgeIntegration {
     }
 
     fn reset_to_defaults(&mut self) {
-        self.set_config(PaymentConfig::default());
+        self.set_config(FlexForgePaymentConfig::default());
     }
 }
 

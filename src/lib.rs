@@ -69,24 +69,23 @@
 #![allow(clippy::manual_let_else)]
 #![allow(clippy::range_plus_one)]
 
-mod channels;
-mod config;
-mod errors;
-mod flexforge;
-mod invoices;
-mod plugin;
-mod router;
-mod types;
+// EMD Module Structure
+pub mod errors;
+pub mod r#impl;
+pub mod traits;
+pub mod types;
 
-pub use channels::ChannelManager;
-pub use config::PaymentConfig;
+// FlexForge integration (root level)
+mod flexforge;
+
+// Re-exports for convenience
 pub use errors::{PaymentError, PaymentResult};
 pub use flexforge::PaymentFlexForgeIntegration;
-pub use invoices::InvoiceGenerator;
-pub use plugin::PaymentPlugin;
-pub use router::PaymentRouter;
+pub use r#impl::{ChannelManager, InvoiceGenerator, PaymentConfig, PaymentPlugin, PaymentRouter};
+pub use traits::{ChannelProvider, InvoiceProvider, PaymentProcessor};
 pub use types::{
     ChannelState, PaymentAmount, PaymentChannel, PaymentInvoice, PaymentRoute, PaymentStatus,
+    RouteHop,
 };
 
 #[cfg(test)]

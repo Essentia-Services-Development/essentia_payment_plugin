@@ -1,10 +1,9 @@
 //! Invoice generation and management.
 
-use crate::{
-    config::PaymentConfig,
-    errors::{PaymentError, PaymentResult},
-    types::PaymentInvoice,
-};
+use crate::errors::{PaymentError, PaymentResult};
+use crate::r#impl::config::PaymentConfig;
+use crate::traits::InvoiceProvider;
+use crate::types::PaymentInvoice;
 use essentia_core::time;
 
 /// Invoice generator for creating payment invoices.
@@ -14,16 +13,27 @@ pub struct InvoiceGenerator {
 
 impl InvoiceGenerator {
     /// Create a new invoice generator.
+    #[must_use]
     pub fn new(config: PaymentConfig) -> Self {
         Self { config }
     }
 
-    /// Generate a new invoice.
-    pub fn generate(
-        &self, amount: Option<u64>, description: impl Into<String>,
-    ) -> PaymentResult<PaymentInvoice> {
-        let description: String = description.into();
+    /// Verify an invoice.
+    pub fn verify(&self, invoice: &PaymentInvoice) -> PaymentResult<bool> {
+        let now = time::unix_seconds_sync();
 
+        if invoice.expiry < now {
+            return Err(PaymentError::Invoice("Invoice has expired".into()));
+        }
+
+        Ok(true)
+    }
+}
+
+impl InvoiceProvider for InvoiceGenerator {
+    fn generate_invoice(
+        &self, amount: Option<u64>, description: &str,
+    ) -> PaymentResult<PaymentInvoice> {
         if description.is_empty() {
             return Err(PaymentError::Invoice("Description cannot be empty".into()));
         }
@@ -38,18 +48,17 @@ impl InvoiceGenerator {
         // In production, this would generate a proper BOLT11 invoice
         let encoded = format!("lnbc{}...placeholder", amount.unwrap_or(0));
 
-        Ok(PaymentInvoice { payment_hash, amount, description, expiry, encoded })
+        Ok(PaymentInvoice {
+            payment_hash,
+            amount,
+            description: description.to_string(),
+            expiry,
+            encoded,
+        })
     }
 
-    /// Verify an invoice.
-    pub fn verify(&self, invoice: &PaymentInvoice) -> PaymentResult<bool> {
-        let now = time::unix_seconds_sync();
-
-        if invoice.expiry < now {
-            return Err(PaymentError::Invoice("Invoice has expired".into()));
-        }
-
-        Ok(true)
+    fn verify_invoice(&self, invoice: &PaymentInvoice) -> PaymentResult<bool> {
+        self.verify(invoice)
     }
 }
 
