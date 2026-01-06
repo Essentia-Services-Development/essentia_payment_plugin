@@ -1,7 +1,9 @@
 //! Payment routing.
 
-use crate::errors::{PaymentError, PaymentResult};
-use crate::types::PaymentRoute;
+use crate::{
+    errors::{PaymentError, PaymentResult},
+    types::PaymentRoute,
+};
 
 /// Payment router for finding routes through the Lightning Network.
 pub struct PaymentRouter {

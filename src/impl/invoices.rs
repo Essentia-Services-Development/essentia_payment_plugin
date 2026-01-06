@@ -1,10 +1,13 @@
 //! Invoice generation and management.
 
-use crate::errors::{PaymentError, PaymentResult};
-use crate::r#impl::config::PaymentConfig;
-use crate::traits::InvoiceProvider;
-use crate::types::PaymentInvoice;
 use essentia_core::time;
+
+use crate::{
+    errors::{PaymentError, PaymentResult},
+    r#impl::config::PaymentConfig,
+    traits::InvoiceProvider,
+    types::PaymentInvoice,
+};
 
 /// Invoice generator for creating payment invoices.
 pub struct InvoiceGenerator {

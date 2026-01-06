@@ -1,9 +1,11 @@
 //! Payment plugin implementation.
 
-use crate::errors::{PaymentError, PaymentResult};
-use crate::r#impl::{ChannelManager, InvoiceGenerator, PaymentConfig, PaymentRouter};
-use crate::traits::{ChannelProvider, InvoiceProvider};
-use crate::types::{PaymentAmount, PaymentInvoice, PaymentStatus};
+use crate::{
+    errors::{PaymentError, PaymentResult},
+    r#impl::{ChannelManager, InvoiceGenerator, PaymentConfig, PaymentRouter},
+    traits::{ChannelProvider, InvoiceProvider},
+    types::{PaymentAmount, PaymentInvoice, PaymentStatus},
+};
 
 /// Main payment plugin interface.
 pub struct PaymentPlugin {

@@ -1,8 +1,10 @@
 //! Payment channel management.
 
-use crate::errors::PaymentResult;
-use crate::traits::ChannelProvider;
-use crate::types::{ChannelState, PaymentChannel};
+use crate::{
+    errors::PaymentResult,
+    traits::ChannelProvider,
+    types::{ChannelState, PaymentChannel},
+};
 
 /// Channel manager for Lightning Network channels.
 pub struct ChannelManager {
