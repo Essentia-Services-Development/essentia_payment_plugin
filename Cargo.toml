@@ -1,14 +1,15 @@
 [package]
 name = "essentia_payment_plugin"
+    repository    = {workspace = true}
+    readme        = {workspace = true}
+    keywords      = {workspace = true}
+    categories    = {workspace = true}
 description = "Lightning Network and micropayment system integration"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 license.workspace = true
 publish.workspace = true
-repository = "https://github.com/Essentia-Services-Development/essentia_payment_plugin"
-keywords = ["essentia", "payment", "lightning", "bitcoin", "micropayments"]
-categories = ["cryptography", "asynchronous"]
 
 [dependencies]
 # Core dependencies (workspace inheritance)
@@ -20,12 +21,8 @@ essentia_api = { workspace = true }
 essentia_error = { workspace = true }
 essentia_consciousness = { workspace = true }
 essentia_secure_core = { workspace = true }
-
 [dev-dependencies]
-
 [features]
 default = []
-
 [lib]
-name = "essentia_payment_plugin"
 path = "src/lib.rs"
