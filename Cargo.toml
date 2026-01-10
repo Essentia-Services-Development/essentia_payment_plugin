@@ -26,3 +26,4 @@ essentia_secure_core = { workspace = true }
 default = []
 [lib]
 path = "src/lib.rs"
+
