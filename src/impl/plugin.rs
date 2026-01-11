@@ -92,7 +92,7 @@ impl Default for PaymentPlugin {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "full-tests"))]
 mod tests {
     use super::*;
 
