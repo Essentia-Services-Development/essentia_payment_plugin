@@ -7,6 +7,7 @@ use crate::{
 };
 
 /// Channel manager for Lightning Network channels.
+#[derive(Debug)]
 pub struct ChannelManager {
     channels: Vec<PaymentChannel>,
 }

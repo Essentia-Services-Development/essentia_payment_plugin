@@ -2,17 +2,19 @@
 
 use crate::{
     errors::{PaymentError, PaymentResult},
-    r#impl::{ChannelManager, InvoiceGenerator, PaymentConfig, PaymentRouter},
+    r#impl::{ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentRouter},
     traits::{ChannelProvider, InvoiceProvider},
-    types::{PaymentAmount, PaymentInvoice, PaymentStatus},
+    types::{LightningInvoice, PaymentAmount, PaymentInvoice, PaymentStatus},
 };
 
 /// Main payment plugin interface.
+#[derive(Debug)]
 pub struct PaymentPlugin {
     config:            PaymentConfig,
     channel_manager:   ChannelManager,
     invoice_generator: InvoiceGenerator,
     router:            PaymentRouter,
+    lightning_node:    LightningNodeImpl,
 }
 
 impl PaymentPlugin {
@@ -26,6 +28,7 @@ impl PaymentPlugin {
             channel_manager: ChannelManager::new(),
             invoice_generator,
             router: PaymentRouter::new(),
+            lightning_node: LightningNodeImpl::new("EssentiaNode".to_string()),
         }
     }
 
@@ -52,11 +55,32 @@ impl PaymentPlugin {
         &self.router
     }
 
+    /// Get the Lightning node.
+    #[must_use]
+    pub fn lightning_node(&self) -> &LightningNodeImpl {
+        &self.lightning_node
+    }
+
+    /// Get mutable Lightning node.
+    pub fn lightning_node_mut(&mut self) -> &mut LightningNodeImpl {
+        &mut self.lightning_node
+    }
+
     /// Create an invoice.
     pub fn create_invoice(
         &self, amount: Option<u64>, description: impl Into<String>,
     ) -> PaymentResult<PaymentInvoice> {
         self.invoice_generator.generate_invoice(amount, &description.into())
+    }
+
+    /// Create a Lightning invoice.
+    pub async fn create_lightning_invoice(
+        &mut self,
+        amount_sats: u64,
+        description: &str,
+        expiry_secs: u64,
+    ) -> PaymentResult<LightningInvoice> {
+        self.lightning_node.create_invoice(amount_sats, description, expiry_secs).await
     }
 
     /// Send a payment.
@@ -79,10 +103,33 @@ impl PaymentPlugin {
         Ok(PaymentStatus::Pending)
     }
 
+    /// Send a Lightning payment.
+    pub async fn send_lightning_payment(
+        &self,
+        invoice: &LightningInvoice,
+    ) -> PaymentResult<PaymentStatus> {
+        self.lightning_node.pay_invoice(invoice).await
+    }
+
     /// Get total spendable balance.
     #[must_use]
     pub fn spendable_balance(&self) -> PaymentAmount {
         PaymentAmount::from_satoshis(self.channel_manager.total_local_balance())
+    }
+
+    /// Get payment status by hash.
+    pub fn get_payment_status(&self, _payment_hash: &[u8; 32]) -> PaymentResult<PaymentStatus> {
+        // In a real implementation, this would check the payment status
+        // For now, return pending
+        Ok(PaymentStatus::Pending)
+    }
+
+    /// Check Lightning invoice status.
+    pub async fn check_lightning_invoice(
+        &self,
+        payment_hash: &crate::types::PaymentHash,
+    ) -> PaymentResult<PaymentStatus> {
+        self.lightning_node.check_invoice(payment_hash).await
     }
 }
 

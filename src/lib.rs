@@ -81,11 +81,12 @@ mod flexforge;
 // Re-exports for convenience
 pub use errors::{PaymentError, PaymentResult};
 pub use flexforge::PaymentFlexForgeIntegration;
-pub use r#impl::{ChannelManager, InvoiceGenerator, PaymentConfig, PaymentPlugin, PaymentRouter};
+pub use r#impl::{ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentPlugin, PaymentRouter};
 pub use traits::{ChannelProvider, InvoiceProvider, PaymentProcessor};
 pub use types::{
-    ChannelState, PaymentAmount, PaymentChannel, PaymentInvoice, PaymentRoute, PaymentStatus,
-    RouteHop,
+    ChannelState, EscrowStatus, EscrowType, LightningInvoice, LightningNode, PaymentAmount,
+    PaymentChannel, PaymentHash, PaymentInvoice, PaymentRoute, PaymentStatus, RouteHop,
+    Satoshis, SubscriptionTier, TierFeatures,
 };
 
 #[cfg(all(test, feature = "full-tests"))]
@@ -98,3 +99,6 @@ mod tests {
         assert!(config.max_channel_capacity > 0);
     }
 }
+
+#[cfg(test)]
+mod tests;

@@ -10,6 +10,7 @@ use crate::{
 };
 
 /// Invoice generator for creating payment invoices.
+#[derive(Debug)]
 pub struct InvoiceGenerator {
     config: PaymentConfig,
 }

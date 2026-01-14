@@ -6,6 +6,7 @@ use crate::{
 };
 
 /// Payment router for finding routes through the Lightning Network.
+#[derive(Debug)]
 pub struct PaymentRouter {
     /// Known nodes in the network graph.
     node_count: usize,

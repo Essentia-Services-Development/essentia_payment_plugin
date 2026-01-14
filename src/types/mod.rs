@@ -8,6 +8,7 @@
 mod core;
 
 pub use core::{
-    ChannelState, PaymentAmount, PaymentChannel, PaymentInvoice, PaymentRoute, PaymentStatus,
-    RouteHop,
+    ChannelState, EscrowStatus, EscrowType, LightningInvoice, LightningNode, PaymentAmount,
+    PaymentChannel, PaymentHash, PaymentInvoice, PaymentRoute, PaymentStatus, RouteHop, Satoshis,
+    SubscriptionTier, TierFeatures,
 };
