@@ -45,3 +45,4 @@ pub trait PaymentProcessor: Send + Sync {
     /// Get total spendable balance.
     fn spendable_balance(&self) -> u64;
 }
+

@@ -162,3 +162,5 @@ mod tests {
         assert_eq!(plugin.spendable_balance().satoshis, 0);
     }
 }
+
+

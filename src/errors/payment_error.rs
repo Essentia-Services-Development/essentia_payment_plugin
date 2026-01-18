@@ -34,3 +34,4 @@ impl fmt::Display for PaymentError {
 
 /// Result type for payment operations.
 pub type PaymentResult<T> = Result<T, PaymentError>;
+
