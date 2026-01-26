@@ -2,6 +2,8 @@
 //!
 //! Lightning Network and micropayment system integration for the Essentia
 //! platform.
+
+#![allow(missing_docs)]
 //!
 //! ## Features
 //!
