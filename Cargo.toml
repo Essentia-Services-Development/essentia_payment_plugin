@@ -1,0 +1,32 @@
+[package]
+name = "essentia_payment_plugin"
+    repository        = { workspace = true }
+    readme            = { workspace = true }
+    keywords          = { workspace = true }
+    categories        = { workspace = true }
+description = "Lightning Network and micropayment system integration"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+# Core dependencies (workspace inheritance)
+essentia_core     = { workspace = true }
+essentia_traits     = { workspace = true }
+essentia_plugin_system     = { workspace = true }
+essentia_pqc     = { workspace = true }
+essentia_api     = { workspace = true }
+essentia_error     = { workspace = true }
+essentia_consciousness     = { workspace = true }
+essentia_secure_core     = { workspace = true }
+[dev-dependencies]
+[features]
+full-tests = []
+default = []
+[lib]
+path = "src/lib.rs"
+
+
+
