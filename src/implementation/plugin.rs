@@ -2,7 +2,9 @@
 
 use crate::{
     errors::{PaymentError, PaymentResult},
-    implementation::{ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentRouter},
+    implementation::{
+        ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentRouter,
+    },
     traits::{ChannelProvider, InvoiceProvider},
     types::{LightningInvoice, PaymentAmount, PaymentInvoice, PaymentStatus},
 };
@@ -75,10 +77,7 @@ impl PaymentPlugin {
 
     /// Create a Lightning invoice.
     pub async fn create_lightning_invoice(
-        &mut self,
-        amount_sats: u64,
-        description: &str,
-        expiry_secs: u64,
+        &mut self, amount_sats: u64, description: &str, expiry_secs: u64,
     ) -> PaymentResult<LightningInvoice> {
         self.lightning_node.create_invoice(amount_sats, description, expiry_secs).await
     }
@@ -105,8 +104,7 @@ impl PaymentPlugin {
 
     /// Send a Lightning payment.
     pub async fn send_lightning_payment(
-        &self,
-        invoice: &LightningInvoice,
+        &self, invoice: &LightningInvoice,
     ) -> PaymentResult<PaymentStatus> {
         self.lightning_node.pay_invoice(invoice).await
     }
@@ -126,8 +124,7 @@ impl PaymentPlugin {
 
     /// Check Lightning invoice status.
     pub async fn check_lightning_invoice(
-        &self,
-        payment_hash: &crate::types::PaymentHash,
+        &self, payment_hash: &crate::types::PaymentHash,
     ) -> PaymentResult<PaymentStatus> {
         self.lightning_node.check_invoice(payment_hash).await
     }

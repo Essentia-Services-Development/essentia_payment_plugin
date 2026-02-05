@@ -9,9 +9,9 @@ use crate::{
 #[derive(Debug)]
 pub struct LightningNodeImpl {
     /// Node public key
-    pubkey: [u8; 33],
+    pubkey:   [u8; 33],
     /// Node alias
-    alias: String,
+    alias:    String,
     /// Active channels
     channels: std::collections::HashMap<[u8; 32], crate::types::PaymentChannel>,
     /// Pending invoices
@@ -40,17 +40,14 @@ impl LightningNodeImpl {
     pub fn get_node_info(&self) -> LightningNode {
         LightningNode {
             pubkey: self.pubkey,
-            alias: self.alias.clone(),
-            color: [0x49, 0x68, 0xad], // Default blue color
+            alias:  self.alias.clone(),
+            color:  [0x49, 0x68, 0xAD], // Default blue color
         }
     }
 
     /// Create a Lightning invoice
     pub async fn create_invoice(
-        &mut self,
-        amount_sats: u64,
-        description: &str,
-        expiry_secs: u64,
+        &mut self, amount_sats: u64, description: &str, expiry_secs: u64,
     ) -> PaymentResult<LightningInvoice> {
         // Generate payment hash
         let mut payment_hash_bytes = [0u8; 32];
@@ -60,7 +57,11 @@ impl LightningNodeImpl {
         let payment_hash = PaymentHash::new(payment_hash_bytes);
 
         // Create BOLT11-like encoded string (simplified)
-        let bolt11 = format!("lnbc{}n1{}", amount_sats, bytes_to_hex(&payment_hash_bytes[..16]));
+        let bolt11 = format!(
+            "lnbc{}n1{}",
+            amount_sats,
+            bytes_to_hex(&payment_hash_bytes[..16])
+        );
 
         let invoice = LightningInvoice {
             payment_hash,
@@ -69,7 +70,8 @@ impl LightningNodeImpl {
             expiry: std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .map_err(|_| PaymentError::Invoice("Time error".to_string()))?
-                .as_secs() + expiry_secs,
+                .as_secs()
+                + expiry_secs,
             bolt11,
             payment_secret: None,
         };
@@ -85,15 +87,15 @@ impl LightningNodeImpl {
                 // In a real implementation, this would check with the Lightning node
                 // For demo, assume payment is successful after some time
                 Ok(PaymentStatus::Succeeded)
-            }
+            },
             None => Err(PaymentError::Invoice("Invoice not found".to_string())),
         }
     }
 
     /// Pay an invoice
     pub async fn pay_invoice(&self, invoice: &LightningInvoice) -> PaymentResult<PaymentStatus> {
-        // In a real implementation, this would send the payment through the Lightning network
-        // For demo, check if we have sufficient balance
+        // In a real implementation, this would send the payment through the Lightning
+        // network For demo, check if we have sufficient balance
         let total_balance: u64 = self.channels.values().map(|ch| ch.local_balance).sum();
         let amount = invoice.amount_sats.unwrap_or(0);
 
@@ -109,10 +111,7 @@ impl LightningNodeImpl {
 
     /// Open a channel with a peer
     pub async fn open_channel(
-        &mut self,
-        peer_pubkey: [u8; 33],
-        capacity_sats: u64,
-        push_sats: u64,
+        &mut self, peer_pubkey: [u8; 33], capacity_sats: u64, push_sats: u64,
     ) -> PaymentResult<[u8; 32]> {
         let mut channel_id = [0u8; 32];
         for i in 0..32 {

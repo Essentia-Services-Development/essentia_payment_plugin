@@ -4,7 +4,6 @@
 //! platform.
 
 #![allow(missing_docs)]
-//!
 //! ## Features
 //!
 //! - Lightning Network channel management
@@ -83,12 +82,15 @@ mod flexforge;
 // Re-exports for convenience
 pub use errors::{PaymentError, PaymentResult};
 pub use flexforge::PaymentFlexForgeIntegration;
-pub use implementation::{ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentPlugin, PaymentRouter};
+pub use implementation::{
+    ChannelManager, InvoiceGenerator, LightningNodeImpl, PaymentConfig, PaymentPlugin,
+    PaymentRouter,
+};
 pub use traits::{ChannelProvider, InvoiceProvider, PaymentProcessor};
 pub use types::{
     ChannelState, EscrowStatus, EscrowType, LightningInvoice, LightningNode, PaymentAmount,
-    PaymentChannel, PaymentHash, PaymentInvoice, PaymentRoute, PaymentStatus, RouteHop,
-    Satoshis, SubscriptionTier, TierFeatures,
+    PaymentChannel, PaymentHash, PaymentInvoice, PaymentRoute, PaymentStatus, RouteHop, Satoshis,
+    SubscriptionTier, TierFeatures,
 };
 
 #[cfg(all(test, feature = "full-tests"))]
@@ -104,4 +106,3 @@ mod tests {
 
 #[cfg(test)]
 mod tests;
-

@@ -1,8 +1,6 @@
 //! Payment Plugin Tests
 
-use crate::{
-    LightningNodeImpl, PaymentAmount, PaymentConfig, PaymentPlugin, SubscriptionTier,
-};
+use crate::{LightningNodeImpl, PaymentAmount, PaymentConfig, PaymentPlugin, SubscriptionTier};
 
 #[cfg(test)]
 mod tests {
